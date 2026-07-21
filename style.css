@@ -78,15 +78,13 @@ header p{
 }
 
 .card{
-
     background:#111;
     border-radius:20px;
     overflow:hidden;
-    box-shadow:0 10px 25px rgba(0,255,255,.2);
-    transition:.4s;
-
+    text-align:center;
+    box-shadow:0 0 15px rgba(0,255,255,0.3);
+    transition:0.4s;
 }
-
 .card:hover{
 
     transform:translateY(-10px);
