@@ -108,12 +108,14 @@ header p{
 
 }
 
+
+
 .card h3{
-
-    text-align:center;
-    padding:15px;
-    color:#00ffd5;
-
+    color:#00ffff;
+    padding:12px;
+    font-size:22px;
+    margin:0;
+}
 }
 
 @media(max-width:768px){
