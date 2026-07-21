@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nature Image Gallery</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+
+<h1>🌍 Amazing Image Gallery</h1>
+
+<p>Animals • Birds • Flowers • Nature • Insects</p>
+
+<input
+type="text"
+id="search"
+placeholder="🔍 Search Image..."
+onkeyup="searchImages()">
+
+</header>
+
+<div class="buttons">
+
+<button onclick="filterGallery('all')">All</button>
+
+<button onclick="filterGallery('animal')">Animals</button>
+
+<button onclick="filterGallery('bird')">Birds</button>
+
+<button onclick="filterGallery('flower')">Flowers</button>
+
+<button onclick="filterGallery('nature')">Nature</button>
+
+<button onclick="filterGallery('insect')">Insects</button>
+
+</div>
+
+<section class="gallery">
+
+<div class="card animal">
+<img src="https://source.unsplash.com/400x300/?lion">
+<h3>Lion</h3>
+</div>
+
+<div class="card animal">
+<img src="https://source.unsplash.com/400x300/?elephant">
+<h3>Elephant</h3>
+</div>
+
+<div class="card animal">
+<img src="https://source.unsplash.com/400x300/?tiger">
+<h3>Tiger</h3>
+</div>
+
+<div class="card animal">
+<img src="https://source.unsplash.com/400x300/?panda">
+<h3>Panda</h3>
+</div>
+
+<div class="card animal">
+<img src="https://source.unsplash.com/400x300/?giraffe">
+<h3>Giraffe</h3>
+</div>
+
+<div class="card bird">
+<img src="https://source.unsplash.com/400x300/?parrot">
+<h3>Parrot</h3>
+</div>
+
+<div class="card bird">
+<img src="https://source.unsplash.com/400x300/?eagle">
+<h3>Eagle</h3>
+</div>
+
+<div class="card bird">
+<img src="https://source.unsplash.com/400x300/?owl">
+<h3>Owl</h3>
+</div>
+
+<div class="card bird">
+<img src="https://source.unsplash.com/400x300/?peacock">
+<h3>Peacock</h3>
+</div>
+
+<div class="card bird">
+<img src="https://source.unsplash.com/400x300/?flamingo">
+<h3>Flamingo</h3>
+</div>
+
+<div class="card flower">
+<img src="https://source.unsplash.com/400x300/?rose">
+<h3>Rose</h3>
+</div>
+
+<div class="card flower">
+<img src="https://source.unsplash.com/400x300/?sunflower">
+<h3>Sunflower</h3>
+</div>
+
+<div class="card flower">
+<img src="https://source.unsplash.com/400x300/?lotus">
+<h3>Lotus</h3>
+</div>
+
+<div class="card flower">
+<img src="https://source.unsplash.com/400x300/?tulip">
+<h3>Tulip</h3>
+</div>
+
+<div class="card flower">
+<img src="https://source.unsplash.com/400x300/?daisy">
+<h3>Daisy</h3>
+</div>
+
+<div class="card nature">
+<img src="https://source.unsplash.com/400x300/?mountain">
+<h3>Mountain</h3>
+</div>
+
+<div class="card nature">
+<img src="https://source.unsplash.com/400x300/?forest">
+<h3>Forest</h3>
+</div>
+
+<div class="card nature">
+<img src="https://source.unsplash.com/400x300/?waterfall">
+<h3>Waterfall</h3>
+</div>
+
+<div class="card nature">
+<img src="https://source.unsplash.com/400x300/?beach">
+<h3>Beach</h3>
+</div>
+
+<div class="card nature">
+<img src="https://source.unsplash.com/400x300/?lake">
+<h3>Lake</h3>
+</div>
+
+<div class="card insect">
+<img src="https://source.unsplash.com/400x300/?butterfly">
+<h3>Butterfly</h3>
+</div>
+
+<div class="card insect">
+<img src="https://source.unsplash.com/400x300/?bee">
+<h3>Honey Bee</h3>
+</div>
+
+<div class="card insect">
+<img src="https://source.unsplash.com/400x300/?dragonfly">
+<h3>Dragonfly</h3>
+</div>
+
+<div class="card insect">
+<img src="https://source.unsplash.com/400x300/?ladybug">
+<h3>Ladybug</h3>
+</div>
+
+<div class="card insect">
+<img src="https://source.unsplash.com/400x300/?grasshopper">
+<h3>Grasshopper</h3>
+</div>
+
+</section>
+
+<script src="script.js"></script>
+
+</body>
+</html>
