@@ -1,4 +1,3 @@
-// Wait for DOM content to load
 document.addEventListener("DOMContentLoaded", () => {
     // Lightbox Elements
     const lightbox = document.getElementById("lightbox");
@@ -12,22 +11,48 @@ document.addEventListener("DOMContentLoaded", () => {
     let visibleCards = [...cards];
     let currentIndex = 0;
 
+    // --- Helper for Fullscreen ---
+    function openInFullScreen(element) {
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.webkitRequestFullscreen) { /* Safari / iOS */
+            element.webkitRequestFullscreen();
+        } else if (element.msRequestFullscreen) { /* IE11 */
+            element.msRequestFullscreen();
+        }
+    }
+
+    function exitFullScreen() {
+        if (document.fullscreenElement || document.webkitFullscreenElement) {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
+    }
+
     // --- Lightbox Functions ---
 
-    // Open Lightbox at a specific index
+    // Open Lightbox & Request Fullscreen
     function openLightbox(index) {
         if (visibleCards.length === 0) return;
         currentIndex = index;
         const img = visibleCards[currentIndex].querySelector("img");
+        
         lightboxImg.src = img.src;
         lightboxImg.alt = img.alt || "Gallery Image";
         lightbox.style.display = "flex";
+
+        // Trigger native device full screen mode
+        openInFullScreen(lightbox);
     }
 
-    // Close Lightbox
+    // Close Lightbox & Exit Fullscreen
     function closeLightbox() {
         lightbox.style.display = "none";
         lightboxImg.src = "";
+        exitFullScreen();
     }
 
     // Show Next Image
@@ -46,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Event Listeners ---
 
-    // Click event for each card to open lightbox
+    // Touch / Click card to trigger full screen lightbox
     cards.forEach((card) => {
         card.addEventListener("click", () => {
             const indexInVisible = visibleCards.indexOf(card);
@@ -56,19 +81,32 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Control Button Clicks
+    // Control Buttons
     closeBtn.addEventListener("click", closeLightbox);
-    nextBtn.addEventListener("click", showNext);
-    prevBtn.addEventListener("click", showPrev);
+    nextBtn.addEventListener("click", (e) => {
+        e.stopPropagation(); // Prevent modal close click
+        showNext();
+    });
+    prevBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        showPrev();
+    });
 
-    // Close when clicking outside the image container
+    // Close when tapping outside the image
     lightbox.addEventListener("click", (e) => {
         if (e.target === lightbox) {
             closeLightbox();
         }
     });
 
-    // Keyboard Navigation (Esc, Left Arrow, Right Arrow)
+    // Exit full screen event listener (handles system back gesture/ESC key)
+    document.addEventListener("fullscreenchange", () => {
+        if (!document.fullscreenElement) {
+            lightbox.style.display = "none";
+        }
+    });
+
+    // Keyboard Controls
     document.addEventListener("keydown", (e) => {
         if (lightbox.style.display === "flex") {
             if (e.key === "Escape") closeLightbox();
@@ -77,14 +115,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // --- Filtering & Search Global Helper Functions ---
+    // --- Filter & Search Functions ---
 
-    // Helper to update visible cards list for lightbox navigation
     function updateVisibleCards() {
         visibleCards = cards.filter(card => card.style.display !== "none");
     }
 
-    // Global Category Filter
     window.filterGallery = function(category) {
         cards.forEach((card) => {
             if (category === "all" || card.classList.contains(category)) {
@@ -93,17 +129,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 card.style.display = "none";
             }
         });
-        // Clear search input on category filter change
         document.getElementById("search").value = "";
         updateVisibleCards();
     };
 
-    // Global Search Functionality
     window.searchImages = function() {
         const query = document.getElementById("search").value.toLowerCase().trim();
-        
         cards.forEach((card) => {
-            const title = card.querySelector("h3").textContent.toLowerCase();
+            const title = card.querySelector("h3") ? card.querySelector("h3").textContent.toLowerCase() : "";
             if (title.includes(query)) {
                 card.style.display = "block";
             } else {
