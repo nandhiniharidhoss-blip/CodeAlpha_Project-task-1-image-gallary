@@ -41,17 +41,7 @@ onkeyup="searchImages()">
 <button onclick="filterGallery('insect')">Insects</button>
     
 </div>
-<div id="lightbox" class="lightbox" onclick="if(event.target==this) closeLightbox();">
-
-    <span class="close" onclick="event.stopPropagation(); closeLightbox();">&times;</span>
-
-    <button class="prev" onclick="event.stopPropagation(); prevImage();">&#10094;</button>
-
-    <img id="lightbox-img" alt="Preview Image" onclick="event.stopPropagation();">
-
-    <button class="next" onclick="event.stopPropagation(); nextImage();">&#10095;</button>
-
-</div>
+<button class="next" onclick="event.stopPropagation(); nextImage();">&#10095;</button>
 <section class="gallery">
 
 <div class="card animal">
