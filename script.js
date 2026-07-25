@@ -1,115 +1,178 @@
-// Wait for DOM content to load
-document.addEventListener("DOMContentLoaded", () => {
-    // Lightbox Elements
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImg = document.getElementById("lightbox-img");
-    const closeBtn = document.getElementById("lightbox-close");
-    const prevBtn = document.getElementById("lightbox-prev");
-    const nextBtn = document.getElementById("lightbox-next");
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+.gallery {
+    position: relative;
+    width: 400px;
+    margin: auto;
+    text-align: center;
+}
 
-    // Gallery Cards and State Variables
-    const cards = Array.from(document.querySelectorAll(".gallery .card"));
-    let visibleCards = [...cards];
-    let currentIndex = 0;
+.gallery img {
+    width: 100%;
+    height: 250px;
+    border-radius: 10px;
+}
 
-    // --- Lightbox Functions ---
+/* Previous & Next Buttons */
+.prev,
+.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
 
-    // Open Lightbox at a specific index
-    function openLightbox(index) {
-        if (visibleCards.length === 0) return;
-        currentIndex = index;
-        const img = visibleCards[currentIndex].querySelector("img");
-        lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt || "Gallery Image";
-        lightbox.style.display = "flex";
-    }
+.prev {
+    left: 15px;
+}
 
-    // Close Lightbox
-    function closeLightbox() {
-        lightbox.style.display = "none";
-        lightboxImg.src = "";
-    }
+.next {
+    right: 15px;
+}
 
-    // Show Next Image
-    function showNext() {
-        if (visibleCards.length === 0) return;
-        currentIndex = (currentIndex + 1) % visibleCards.length;
-        openLightbox(currentIndex);
-    }
+.prev:hover,
+.next:hover {
+    background: #ff9800;
+    transform: translateY(-50%) scale(1.1);
+}
+body{
+    background:#000;
+    color:#fff;
+}
 
-    // Show Previous Image
-    function showPrev() {
-        if (visibleCards.length === 0) return;
-        currentIndex = (currentIndex - 1 + visibleCards.length) % visibleCards.length;
-        openLightbox(currentIndex);
-    }
+header{
+    text-align:center;
+    padding:30px;
+    background:linear-gradient(135deg,#111,#222,#000);
+}
 
-    // --- Event Listeners ---
+header h1{
+    font-size:42px;
+    color:#00ffd5;
+    margin-bottom:10px;
+}
 
-    // Click event for each card to open lightbox
-    cards.forEach((card) => {
-        card.addEventListener("click", () => {
-            const indexInVisible = visibleCards.indexOf(card);
-            if (indexInVisible !== -1) {
-                openLightbox(indexInVisible);
-            }
-        });
-    });
+header p{
+    color:#ccc;
+    margin-bottom:20px;
+}
 
-    // Control Button Clicks
-    closeBtn.addEventListener("click", closeLightbox);
-    nextBtn.addEventListener("click", showNext);
-    prevBtn.addEventListener("click", showPrev);
+#search{
+    width:320px;
+    max-width:90%;
+    padding:12px;
+    border:none;
+    border-radius:30px;
+    outline:none;
+    font-size:17px;
+}
 
-    // Close when clicking outside the image container
-    lightbox.addEventListener("click", (e) => {
-        if (e.target === lightbox) {
-            closeLightbox();
-        }
-    });
+.buttons{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin:30px;
+}
 
-    // Keyboard Navigation (Esc, Left Arrow, Right Arrow)
-    document.addEventListener("keydown", (e) => {
-        if (lightbox.style.display === "flex") {
-            if (e.key === "Escape") closeLightbox();
-            if (e.key === "ArrowRight") showNext();
-            if (e.key === "ArrowLeft") showPrev();
-        }
-    });
+.buttons button{
 
-    // --- Filtering & Search Global Helper Functions ---
+    padding:12px 22px;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+    background:#00b894;
+    color:#fff;
+    font-size:16px;
+    transition:.4s;
 
-    // Helper to update visible cards list for lightbox navigation
-    function updateVisibleCards() {
-        visibleCards = cards.filter(card => card.style.display !== "none");
-    }
+}
 
-    // Global Category Filter
-    window.filterGallery = function(category) {
-        cards.forEach((card) => {
-            if (category === "all" || card.classList.contains(category)) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
-        });
-        // Clear search input on category filter change
-        document.getElementById("search").value = "";
-        updateVisibleCards();
-    };
+.buttons button:hover{
 
-    // Global Search Functionality
-    window.searchImages = function() {
-        const query = document.getElementById("search").value.toLowerCase().trim();
-        
-        cards.forEach((card) => {
-            const title = card.querySelector("h3").textContent.toLowerCase();
-            if (title.includes(query)) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
-        });
-        updateVisibleCards();
-    };
-});
+    background:#00e5ff;
+    color:#000;
+    transform:scale(1.08);
+
+}
+
+.gallery{
+
+    width:92%;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+    padding-bottom:50px;
+
+}
+
+.card{
+    background:#111;
+    border-radius:20px;
+    overflow:hidden;
+    text-align:center;
+    box-shadow:0 0 15px rgba(0,255,255,0.3);
+    transition:0.4s;
+}
+.card:hover{
+
+    transform:translateY(-10px);
+
+}
+
+.card img{
+
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    transition:.5s;
+
+}
+
+.card:hover img{
+
+    transform:scale(1.1);
+
+}
+
+
+
+.card h3{
+    color:#00ffff;
+    padding:12px;
+    font-size:22px;
+    margin:0;
+}
+}
+
+@media(max-width:768px){
+
+header h1{
+
+font-size:30px;
+
+}
+
+#search{
+
+width:90%;
+
+}
+
+}
+
+     
