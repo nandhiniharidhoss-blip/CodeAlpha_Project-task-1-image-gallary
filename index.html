@@ -41,7 +41,7 @@ onkeyup="searchImages()">
 <button onclick="filterGallery('insect')">Insects</button>
     
 </div>
-<button class="next" onclick="event.stopPropagation(); nextImage();">&#10095;</button>
+<div id="lightbox" class="lightbox"> <span class="close" onclick="closeLightbox()">&times;</span> <button class="prev" onclick="prevImage()">&#10094;</button> <img id="lightbox-img"> <button class="next" onclick="nextImage()">&#10095;</button> </div> give atler this code and should operate while touching
 <section class="gallery">
 
 <div class="card animal">
