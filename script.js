@@ -163,5 +163,19 @@
 
     updateVisibleCards();
   };
+  closeBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  closeLightbox();
+});
+
+nextBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  showNext();
+});
+
+prevBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  showPrev();
+});
 });
      
