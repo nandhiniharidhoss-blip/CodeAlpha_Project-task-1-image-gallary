@@ -41,12 +41,16 @@ onkeyup="searchImages()">
 <button onclick="filterGallery('insect')">Insects</button>
     
 </div>
+
 <div id="lightbox" class="lightbox">
-    <span class="close" onclick="closeLightbox()">&times;</span> 
-    <button class="prev" onclick="prevImage()">&#10094;</button>
-    <img id="lightbox-img"> 
-    <button class="next" onclick="nextImage()">&#10095;</button>
-</div> 
+    <span id="lightbox-close" class="close">&times;</span>
+
+    <button id="lightbox-prev" class="prev">&#10094;</button>
+
+    <img id="lightbox-img">
+
+    <button id="lightbox-next" class="next">&#10095;</button>
+</div>
 <section class="gallery">
 
 <div class="card animal">
