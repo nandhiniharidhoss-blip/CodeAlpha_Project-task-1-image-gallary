@@ -1,65 +1,167 @@
-let images=document.querySelectorAll(".gallery img");
+ document.addEventListener("DOMContentLoaded", () => {
+  // Lightbox Elements
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
+  const closeBtn = document.getElementById("lightbox-close");
+  const prevBtn = document.getElementById("lightbox-prev");
+  const nextBtn = document.getElementById("lightbox-next");
 
-let current=0;
+  // Gallery Cards and State Variables
+  const cards = Array.from(document.querySelectorAll(".gallery .card"));
+  let visibleCards = [...cards];
+  let currentIndex = 0;
 
-function openLightbox(src){
+  // --- Helper for Fullscreen ---
+  function openInFullScreen(element) {
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if (element.webkitRequestFullscreen) { /* Safari / iOS */
+      element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) { /* IE11 */
+      element.msRequestFullscreen();
+    }
+  }
 
-document.getElementById("lightbox").style.display="flex";
+  function exitFullScreen() {
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+    }
+  }
 
-document.getElementById("lightbox-img").src=src;
+  // --- Helper to Update Displayed Image ---
+  function updateLightboxImage() {
+    const img = visibleCards[currentIndex].querySelector("img");
+    if (img) {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt || "Gallery Image";
+    }
+  }
 
-current=[...images].findIndex(img=>img.src===src);
+  // --- Lightbox Functions ---
 
-}
+  // Open Lightbox & Request Fullscreen
+  function openLightbox(index) {
+    if (visibleCards.length === 0) return;
+    currentIndex = index;
+    updateLightboxImage();
+    lightbox.style.display = "flex";
 
-function closeLightbox(){
+    // Trigger native device full screen mode
+    openInFullScreen(lightbox);
+  }
 
-document.getElementById("lightbox").style.display="none";
+  // Close Lightbox & Exit Fullscreen
+  function closeLightbox() {
+    lightbox.style.display = "none";
+    lightboxImg.src = "";
+    exitFullScreen();
+  }
 
-}
+  // Show Next Image
+  function showNext() {
+    if (visibleCards.length === 0) return;
+    currentIndex = (currentIndex + 1) % visibleCards.length;
+    updateLightboxImage();
+  }
 
-function changeImage(step){
+  // Show Previous Image
+  function showPrev() {
+    if (visibleCards.length === 0) return;
+    currentIndex = (currentIndex - 1 + visibleCards.length) % visibleCards.length;
+    updateLightboxImage();
+  }
 
-current+=step;
+  // --- Event Listeners ---
 
-if(current<0)
+  // Touch / Click card to trigger full screen lightbox
+  cards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const indexInVisible = visibleCards.indexOf(card);
+      if (indexInVisible !== -1) {
+        openLightbox(indexInVisible);
+      }
+    });
+  });
 
-current=images.length-1;
+  // Control Buttons
+  closeBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    closeLightbox();
+  });
 
-if(current>=images.length)
+  nextBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // Prevent modal close click
+    showNext();
+  });
 
-current=0;
+  prevBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    showPrev();
+  });
 
-document.getElementById("lightbox-img").src=images[current].src;
+  // Close when tapping outside the image
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) {
+      closeLightbox();
+    }
+  });
 
-}
+  // Exit full screen event listener (handles system back gesture/ESC key)
+  document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) {
+      lightbox.style.display = "none";
+    }
+  });
 
-function filterSelection(category){
+  // Keyboard Controls
+  document.addEventListener("keydown", (e) => {
+    if (lightbox.style.display === "flex") {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowRight") showNext();
+      if (e.key === "ArrowLeft") showPrev();
+    }
+  });
 
-let items=document.querySelectorAll(".image");
+  // --- Filter & Search Functions ---
 
-items.forEach(item=>{
+  function updateVisibleCards() {
+    visibleCards = cards.filter(card => card.style.display !== "none");
+  }
 
-if(category==="all")
+  window.filterGallery = function(category) {
+    cards.forEach((card) => {
+      if (category === "all" || card.classList.contains(category)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
 
-item.style.display="block";
+    const searchInput = document.getElementById("search");
+    if (searchInput) searchInput.value = "";
+    
+    updateVisibleCards();
+  };
 
-else if(item.classList.contains(category))
+  window.searchImages = function() {
+    const searchInput = document.getElementById("search");
+    if (!searchInput) return;
 
-item.style.display="block";
+    const query = searchInput.value.toLowerCase().trim();
+    cards.forEach((card) => {
+      const title = card.querySelector("h3") ? card.querySelector("h3").textContent.toLowerCase() : "";
+      if (title.includes(query)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
 
-else
-
-item.style.display="none";
-
+    updateVisibleCards();
+  };
 });
-
-let btn=document.querySelectorAll(".buttons button");
-
-btn.forEach(b=>b.classList.remove("active"));
-
-event.target.classList.add("active");
-
-}
-
      
